@@ -26,13 +26,13 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            LittleDropWelcomeScreen()
+            LoginScreen() //Cambiar la función para ver las otras pantallas (WelcomeScreen(), LoginScreen(), SignUpScreen())
         }
     }
 }
 
 @Composable
-fun LittleDropWelcomeScreen() {
+fun WelcomeScreen() {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -111,6 +111,214 @@ fun LittleDropWelcomeScreen() {
             SocialIcon(Color(0xFFE15543), "G+")
             SocialIcon(Color(0xFF1F83BE), "in")
         }
+    }
+}
+
+@Composable
+fun LoginScreen() {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.White)
+            .padding(horizontal = 40.dp), // Un poco más de aire para los inputs
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Spacer(modifier = Modifier.height(100.dp))
+
+        Image(
+            painter = painterResource(id = R.drawable.welcome_screen_image),
+            contentDescription = "Login Illustration",
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(250.dp),
+            contentScale = ContentScale.Fit
+        )
+
+        Spacer(modifier = Modifier.height(30.dp))
+
+        Text(
+            text = "Welcome Back",
+            fontSize = 28.sp,
+            fontWeight = FontWeight.Bold,
+            color = Color(0xFF333333)
+        )
+
+        Spacer(modifier = Modifier.height(10.dp))
+
+        Text(
+            text = "Login to your account",
+            fontSize = 16.sp,
+            color = Color.Gray
+        )
+
+        Spacer(modifier = Modifier.height(30.dp))
+
+        // Campo de Email
+        InputField(label = "Email Address")
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // Campo de Contraseña
+        InputField(label = "Password", isPassword = true)
+
+        Spacer(modifier = Modifier.height(12.dp))
+
+        // Olvidé mi contraseña
+        Text(
+            text = "Forgot Password?",
+            modifier = Modifier.align(Alignment.End),
+            fontSize = 14.sp,
+            color = Color(0xFF4A47A3),
+            fontWeight = FontWeight.Medium
+        )
+
+        Spacer(modifier = Modifier.height(40.dp))
+
+        // Botón de Login
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(55.dp)
+                .clip(RoundedCornerShape(25.dp))
+                .background(Color(0xFF4A47A3)),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = "Login",
+                color = Color.White,
+                fontWeight = FontWeight.SemiBold,
+                fontSize = 18.sp
+            )
+        }
+
+        Spacer(modifier = Modifier.height(30.dp))
+
+        Text(text = "Or login using", fontSize = 12.sp, color = Color.Gray)
+
+        Spacer(modifier = Modifier.height(15.dp))
+
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(15.dp)
+        ) {
+            SocialIcon(Color(0xFF3B5998), "f")
+            SocialIcon(Color(0xFFE15543), "G+")
+            SocialIcon(Color(0xFF1F83BE), "in")
+        }
+    }
+}
+
+@Composable
+fun SignUpScreen() {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.White)
+            .padding(horizontal = 40.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Spacer(modifier = Modifier.height(80.dp))
+
+        Image(
+            painter = painterResource(id = R.drawable.welcome_screen_image),
+            contentDescription = "Sign Up Illustration",
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(200.dp),
+            contentScale = ContentScale.Fit
+        )
+
+        Spacer(modifier = Modifier.height(20.dp))
+
+        Text(
+            text = "Create Account",
+            fontSize = 28.sp,
+            fontWeight = FontWeight.Bold,
+            color = Color(0xFF333333)
+        )
+
+        Text(
+            text = "Sign up to start managing tasks",
+            fontSize = 16.sp,
+            color = Color.Gray
+        )
+
+        Spacer(modifier = Modifier.height(30.dp))
+
+        // Campos de Registro
+        InputField(label = "Full Name")
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        InputField(label = "Email Address")
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        InputField(label = "Create Password", isPassword = true)
+
+        Spacer(modifier = Modifier.height(30.dp))
+
+        // Botón principal de Registro
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(55.dp)
+                .clip(RoundedCornerShape(25.dp))
+                .background(Color(0xFF4A47A3)),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = "Sign Up",
+                color = Color.White,
+                fontWeight = FontWeight.SemiBold,
+                fontSize = 18.sp
+            )
+        }
+
+        Spacer(modifier = Modifier.height(25.dp))
+
+        Row {
+            Text(text = "Already have an account? ", color = Color.Gray, fontSize = 14.sp)
+            Text(
+                text = "Log In",
+                color = Color(0xFF4A47A3),
+                fontWeight = FontWeight.Bold,
+                fontSize = 14.sp
+            )
+        }
+
+        Spacer(modifier = Modifier.height(30.dp))
+
+        Text(text = "Sign up using", fontSize = 12.sp, color = Color.Gray)
+
+        Spacer(modifier = Modifier.height(15.dp))
+
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(15.dp)
+        ) {
+            SocialIcon(Color(0xFF3B5998), "f")
+            SocialIcon(Color(0xFFE15543), "G+")
+            SocialIcon(Color(0xFF1F83BE), "in")
+        }
+
+        Spacer(modifier = Modifier.height(20.dp))
+    }
+}
+
+@Composable
+fun InputField(label: String, isPassword: Boolean = false) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(55.dp)
+            .border(1.dp, Color(0xFFE0E0E0), RoundedCornerShape(25.dp))
+            .padding(horizontal = 20.dp),
+        contentAlignment = Alignment.CenterStart
+    ) {
+        Text(
+            text = label,
+            color = Color.LightGray,
+            fontSize = 16.sp
+        )
     }
 }
 
