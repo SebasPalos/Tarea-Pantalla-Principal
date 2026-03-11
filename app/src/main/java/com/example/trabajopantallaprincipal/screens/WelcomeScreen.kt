@@ -64,7 +64,7 @@ fun WelcomeScreen(navController: NavController) {
 
         Spacer(modifier = Modifier.height(50.dp))
 
-        // Botón Login (Real Button)
+        // Botón Login
         Button(
             onClick = { navController.navigate("login") },
             modifier = Modifier

@@ -4,46 +4,62 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.example.trabajopantallaprincipal.InputField
 import com.example.trabajopantallaprincipal.R
 import com.example.trabajopantallaprincipal.SocialIcon
 
 @Composable
 fun SignUpScreen(navController: NavController) {
+    var fullName by remember { mutableStateOf("") }
+    var email by remember { mutableStateOf("") }
+    var phone by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
+    var confirmPassword by remember { mutableStateOf("") }
+
+    // Validaciones
+    val isNameValid = fullName.isNotBlank() && fullName.all { it.isLetter() || it.isWhitespace() }
+    val isEmailValid = android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
+    val isPhoneValid = phone.length == 10 && phone.all { it.isDigit() }
+    val isPasswordMatch = password == confirmPassword && password.isNotEmpty()
+    
+    val isFormValid = isNameValid && isEmailValid && isPhoneValid && isPasswordMatch
+
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(Color.White)
-            .padding(horizontal = 40.dp),
+            .padding(horizontal = 40.dp)
+            .verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Spacer(modifier = Modifier.height(80.dp))
+        Spacer(modifier = Modifier.height(40.dp))
 
         Image(
             painter = painterResource(id = R.drawable.welcome_screen_image),
             contentDescription = "Sign Up Illustration",
             modifier = Modifier
                 .fillMaxWidth()
-                .height(200.dp),
+                .height(180.dp),
             contentScale = ContentScale.Fit
         )
 
-        Spacer(modifier = Modifier.height(20.dp))
+        Spacer(modifier = Modifier.height(10.dp))
 
         Text(
             text = "Create Account",
@@ -58,28 +74,112 @@ fun SignUpScreen(navController: NavController) {
             color = Color.Gray
         )
 
-        Spacer(modifier = Modifier.height(30.dp))
+        Spacer(modifier = Modifier.height(20.dp))
 
-        InputField(label = "Full Name")
+        OutlinedTextField(
+            value = fullName,
+            onValueChange = { if (it.all { char -> char.isLetter() || char.isWhitespace() }) fullName = it },
+            label = { Text("Full Name") },
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(25.dp),
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedBorderColor = Color(0xFF4A47A3),
+                unfocusedBorderColor = Color(0xFFE0E0E0),
+                focusedLabelColor = Color(0xFF4A47A3),
+                unfocusedLabelColor = Color.LightGray
+            ),
+            singleLine = true,
+            isError = fullName.isNotEmpty() && !isNameValid
+        )
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(12.dp))
 
-        InputField(label = "Email Address")
+        OutlinedTextField(
+            value = email,
+            onValueChange = { email = it },
+            label = { Text("Email Address") },
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(25.dp),
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedBorderColor = Color(0xFF4A47A3),
+                unfocusedBorderColor = Color(0xFFE0E0E0),
+                focusedLabelColor = Color(0xFF4A47A3),
+                unfocusedLabelColor = Color.LightGray
+            ),
+            singleLine = true,
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+            isError = email.isNotEmpty() && !isEmailValid
+        )
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(12.dp))
 
-        InputField(label = "Create Password", isPassword = true)
+        OutlinedTextField(
+            value = phone,
+            onValueChange = { if (it.length <= 10 && it.all { char -> char.isDigit() }) phone = it },
+            label = { Text("Phone Number (10 digits)") },
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(25.dp),
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedBorderColor = Color(0xFF4A47A3),
+                unfocusedBorderColor = Color(0xFFE0E0E0),
+                focusedLabelColor = Color(0xFF4A47A3),
+                unfocusedLabelColor = Color.LightGray
+            ),
+            singleLine = true,
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
+            isError = phone.isNotEmpty() && !isPhoneValid
+        )
 
-        Spacer(modifier = Modifier.height(30.dp))
+        Spacer(modifier = Modifier.height(12.dp))
 
-        // Botón principal de Registro
+        OutlinedTextField(
+            value = password,
+            onValueChange = { password = it },
+            label = { Text("Password") },
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(25.dp),
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedBorderColor = Color(0xFF4A47A3),
+                unfocusedBorderColor = Color(0xFFE0E0E0),
+                focusedLabelColor = Color(0xFF4A47A3),
+                unfocusedLabelColor = Color.LightGray
+            ),
+            visualTransformation = PasswordVisualTransformation(),
+            singleLine = true
+        )
+
+        Spacer(modifier = Modifier.height(12.dp))
+
+        OutlinedTextField(
+            value = confirmPassword,
+            onValueChange = { confirmPassword = it },
+            label = { Text("Confirm Password") },
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(25.dp),
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedBorderColor = Color(0xFF4A47A3),
+                unfocusedBorderColor = Color(0xFFE0E0E0),
+                focusedLabelColor = Color(0xFF4A47A3),
+                unfocusedLabelColor = Color.LightGray
+            ),
+            visualTransformation = PasswordVisualTransformation(),
+            singleLine = true,
+            isError = confirmPassword.isNotEmpty() && !isPasswordMatch
+        )
+
+        Spacer(modifier = Modifier.height(25.dp))
+
         Button(
             onClick = { navController.navigate("main") },
+            enabled = isFormValid,
             modifier = Modifier
                 .fillMaxWidth()
                 .height(55.dp),
             shape = RoundedCornerShape(25.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF4A47A3)),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color(0xFF4A47A3),
+                disabledContainerColor = Color(0xFFBDBDBD)
+            ),
             contentPadding = PaddingValues(0.dp)
         ) {
             Text(
@@ -90,7 +190,7 @@ fun SignUpScreen(navController: NavController) {
             )
         }
 
-        Spacer(modifier = Modifier.height(25.dp))
+        Spacer(modifier = Modifier.height(20.dp))
 
         Row {
             Text(text = "Already have an account? ", color = Color.Gray, fontSize = 14.sp)
@@ -103,11 +203,11 @@ fun SignUpScreen(navController: NavController) {
             )
         }
 
-        Spacer(modifier = Modifier.height(30.dp))
+        Spacer(modifier = Modifier.height(20.dp))
 
         Text(text = "Sign up using", fontSize = 12.sp, color = Color.Gray)
 
-        Spacer(modifier = Modifier.height(15.dp))
+        Spacer(modifier = Modifier.height(10.dp))
 
         Row(
             horizontalArrangement = Arrangement.spacedBy(15.dp)

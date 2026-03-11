@@ -4,10 +4,8 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -25,24 +23,6 @@ class MainActivity : ComponentActivity() {
         setContent {
             AppNavigation()
         }
-    }
-}
-
-@Composable
-fun InputField(label: String, isPassword: Boolean = false) {
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(55.dp)
-            .border(1.dp, Color(0xFFE0E0E0), RoundedCornerShape(25.dp))
-            .padding(horizontal = 20.dp),
-        contentAlignment = Alignment.CenterStart
-    ) {
-        Text(
-            text = label,
-            color = Color.LightGray,
-            fontSize = 16.sp
-        )
     }
 }
 
